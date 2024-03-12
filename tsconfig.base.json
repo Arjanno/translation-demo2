@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@api/web-translator-query": ["libs/api/web-translator-query/src/index.ts"],
+      "@backend/web-translator-query": ["libs/backend/web-translator-query/src/index.ts"],
+
       "@backend/web-translator-automation": ["libs/backend/web-translator-automation/src/index.ts"],
 
       "@api/web-translator-command": ["libs/api/web-translator-command/src/index.ts"],

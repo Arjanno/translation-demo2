@@ -1,3 +1,7 @@
+import { webTranslatorDatabaseModels } from '@backend/web-translator-query';
+
+import { webTranslatorQueryProjectors } from '@backend/web-translator-query';
+
 import {
   AxonApplication,
   configLogger,
@@ -22,6 +26,7 @@ configLogger();
 const axonConnector = new AxonApplication({
   queryProjectors: [
     //queryProjectors
+    ...webTranslatorQueryProjectors, //qp
   ],
 
   connection: {
@@ -46,6 +51,8 @@ const axonConnector = new AxonApplication({
 
     models: [
       //dbmodels
+    ...webTranslatorDatabaseModels, //dbm
+
     ],
 
   },

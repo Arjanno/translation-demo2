@@ -1,3 +1,6 @@
+import { ApproveTranslationPrice } from '@api/web-translator-command';
+
+
 import { TranslationPrice } from '@api/web-translator-command';
 import { translatorService } from '@backend/infrastructure';
 
@@ -10,6 +13,15 @@ import { CommandContext, commandHandler,CommandReturnType } from '@ebd-connect/c
 
 export class TranslationApplicationService {
   //commandHandlers
+  @commandHandler({ name: 'ApproveTranslationPrice' })
+  async approveTranslationPrice(command: ApproveTranslationPrice, { eventSourcing }: CommandContext) {
+    await eventSourcing.load(Translation, command.translationId, (eventStream) =>
+      eventStream.approveTranslationPrice(command )
+    );
+  }
+
+  //end ApproveTranslationPrice
+
   @commandHandler({ name: 'TranslationPrice' })
   async translationPrice(command: TranslationPrice, { eventSourcing }: CommandContext) {
     await eventSourcing.load(Translation, command.translationId, (eventStream) =>

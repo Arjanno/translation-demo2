@@ -1,3 +1,10 @@
+import { TranslationPriceApproved } from '@api/web-translator-event';
+
+import { TranslationPriceDeclined } from '@api/web-translator-event';
+
+import { ApproveTranslationPrice } from '@api/web-translator-command';
+
+
 import { TranslationPriceNotFound } from '@api/web-translator-event';
 
 import { TranslationPriceDetermined } from '@api/web-translator-event';
@@ -22,6 +29,30 @@ export class Translation extends AggregateRoot {
   private text! : string;
   private translationId! : string;
   //when
+  //start ApproveTranslationPrice
+  public approveTranslationPrice( command: ApproveTranslationPrice ) {
+
+    if (command.approved) {
+      this.apply(TranslationPriceDeclined, { ...command  });
+   }
+    if (!command.approved) {
+      this.apply(TranslationPriceApproved, { ...command  });
+   }
+  }
+  @eventSourcingHandler({ name: 'TranslationPriceDeclined' })
+  onTranslationPriceDeclined(event: TranslationPriceDeclined) {
+    //
+  }
+
+  @eventSourcingHandler({ name: 'TranslationPriceApproved' })
+  onTranslationPriceApproved(event: TranslationPriceApproved) {
+    this.translationId = event.translationId;
+    this.price = event.price;
+    this.approved = event.approved;
+  }
+
+  //end ApproveTranslationPrice
+
   //start TranslationPrice
   public translationPrice( command: TranslationPrice, calcPrice: {({text}: {text: string})} ) {
     const result = calcPrice({text:command.text})

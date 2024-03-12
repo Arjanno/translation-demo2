@@ -1,3 +1,5 @@
+import { webTranslatorQueryHandlers } from '@backend/web-translator-query';
+
 import {
   AxonApplication,
   configLogger,
@@ -21,6 +23,8 @@ configLogger();
 
 const axonConnector = new AxonApplication({
   queryHandlers: [
+    ...webTranslatorQueryHandlers,
+
     //queryHandlers
   ],
   connection: {
