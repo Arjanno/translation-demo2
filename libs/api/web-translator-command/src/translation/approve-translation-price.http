@@ -1,0 +1,15 @@
+### ApproveTranslationPrice Command
+POST http://localhost:3100/
+Content-Type: application/json
+
+{
+"command": "ApproveTranslationPrice",
+  "payload": {
+     "translationId" : "",
+     "price" : "",
+     "approved" : ""
+  }
+}
+
+
+
