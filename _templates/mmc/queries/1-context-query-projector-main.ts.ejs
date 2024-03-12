@@ -1,0 +1,7 @@
+---
+inject: true
+to: apps/mmc-query-projector/src/main.ts
+after: queryProjectors
+skip_if: <%=contextName%>
+---
+    ...<%=contextName%>QueryProjectors,

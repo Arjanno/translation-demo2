@@ -1,0 +1,7 @@
+---
+inject: true
+to: libs/backend/<%=contextFileName %>-core/src/application/<%=eventStreamFileName%>-app-config.ts
+skip_if: import { <%=EventStreamName%>ApplicationService
+prepend: true
+---
+import { <%=EventStreamName%>ApplicationService } from './<%=eventStreamFileName%>-application-service';

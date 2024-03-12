@@ -1,0 +1,10 @@
+---
+to: libs/backend/<%=contextFileName %>-core/src/domain/<%=eventStreamFileName%>.ts
+inject: true
+before: //end <%=CommandName%>
+---
+  @eventSourcingHandler({ name: '<%=EventName%>' })
+  on<%=EventName%>(event: <%=EventName%>) {
+<%events[eventIndex].event.facts.filter((fact) => !fact.isIdentifier || isStartOfEventStream).map( (fact) => {%>    this.<%=h.changeCase.camel(fact.fact.name)%> = event.<%=h.changeCase.camel(fact.fact.name)%>;
+<% }) -%>
+  }

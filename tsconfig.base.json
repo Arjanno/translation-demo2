@@ -1,0 +1,33 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@backend/web-translator-automation": ["libs/backend/web-translator-automation/src/index.ts"],
+
+      "@api/web-translator-command": ["libs/api/web-translator-command/src/index.ts"],
+      "@api/web-translator-event": ["libs/api/web-translator-event/src/index.ts"],
+      "@backend/web-translator-core": ["libs/backend/web-translator-core/src/index.ts"],
+
+      "@api/legacy": ["libs/api/legacy/src/index.ts"],
+      "@backend/legacy": ["libs/backend/legacy/src/index.ts"],
+      "@backend/vendors": ["libs/backend/vendors/src/index.ts"],
+      "@backend/infrastructure": [
+        "libs/backend/infrastructure/src/index.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

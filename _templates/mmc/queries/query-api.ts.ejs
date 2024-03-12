@@ -1,0 +1,19 @@
+---
+to: libs/api/<%=contextFileName %>-query/src/<%=queryFileName%>/<%=queryFileName%>-queries.ts
+force: true
+---
+import { Query, query } from '@ebd-connect/cqrs-framework'
+
+export interface I<%=QueryName%> {
+<% queries[queriesIndex].facts.map( (item) => {%>  <%=h.changeCase.camel(item.fact.name)%> : <%=item.fact.factValueType.dataTypes[0].dataType.name%>,
+<% }) -%>
+}
+
+@query('<%=QueryName%>')
+export class <%=QueryName%> implements Query {
+  $responseType!: I<%=QueryName%> | null
+  constructor(
+<% queries[queriesIndex].facts.map( (item) => {%>    public readonly <%=h.changeCase.camel(item.fact.name)%> : <%=item.fact.factValueType.dataTypes[0].dataType.name%>,
+<% }) -%>  ) {}
+}
+

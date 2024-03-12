@@ -1,0 +1,18 @@
+---
+to: libs/backend/<%=contextFileName%>-query/src/<%=contextFileName%>/<%=contextFileName%>-query-projector.ts
+force: true
+---
+import { eventHandler } from '@ebd-connect/cqrs-framework'
+import {   <%=queryName%>QueryDb,} from './<%=contextFileName%>-query-db'
+<% queries[queryIndex].events.map((item) => {-%>
+import {   <%=h.changeCase.pascal(item.flowEvent.event.name)%>,} from '@api/<%=h.changeCase.param(item.flowEvent.event.context.name)%>-event'
+<%})-%>
+
+export class <%=QueryName%>QueryProjector {
+<% queries[queryIndex].events.map((item) => {-%>
+    @eventHandler({name:'<%=h.changeCase.pascal(item.flowEvent.event.name)%>'})
+    async on<%=h.changeCase.pascal(item.flowEvent.event.name)%>({<%=identifierName%>: id,...data}: <%=h.changeCase.pascal(item.flowEvent.event.name)%>) {
+      await <%=queryName%>QueryDb.create(id, {<%=identifierName%>: id,...data})
+    }
+<%})-%>
+}

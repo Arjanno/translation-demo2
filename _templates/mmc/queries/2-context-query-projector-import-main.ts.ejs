@@ -1,0 +1,7 @@
+---
+inject: true
+to: apps/mmc-query-projector/src/main.ts
+prepend: true
+skip_if: import { <%=contextName%>QueryProjectors
+---
+import { <%=contextName%>QueryProjectors } from '@backend/<%=contextFileName%>-query';

@@ -1,0 +1,9 @@
+---
+to: libs/backend/<%=contextFileName %>-core/src/application/<%=eventStreamFileName%>-app-config.ts
+unless_exists: true
+---
+import { Type } from '@ebd-connect/cqrs-framework';
+
+export const <%=contextName%>CommandHandlers: Type[] = [
+  //services
+];

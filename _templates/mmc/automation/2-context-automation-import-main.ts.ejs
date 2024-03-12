@@ -1,0 +1,7 @@
+---
+inject: true
+to: apps/mmc-automation/src/main.ts
+prepend: true
+skip_if: import { <%=contextName%>Processors
+---
+import { <%=contextName%>Processors } from '@backend/<%=contextFileName%>-automation';

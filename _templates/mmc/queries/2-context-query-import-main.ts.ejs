@@ -1,0 +1,7 @@
+---
+inject: true
+to: apps/mmc-query/src/main.ts
+prepend: true
+skip_if: import { <%=contextName%>QueryHandlers
+---
+import { <%=contextName%>QueryHandlers } from '@backend/<%=contextFileName%>-query';

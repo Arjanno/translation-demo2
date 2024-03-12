@@ -1,0 +1,10 @@
+---
+to: libs/backend/<%=contextFileName%>-automation/src/<%=contextFileName%>-automation.ts
+force: true
+---
+import { <%=AutomationName%>} from './<%= eventStreamFileName%>/<%= automationFileName%>';
+import { Type } from "@ebd-connect/cqrs-framework";
+
+export const <%=contextName %>Processors: Type[] = [
+  <%=AutomationName%>,
+]

@@ -1,0 +1,17 @@
+---
+to: libs/backend/<%=contextFileName %>-query/src/<%=contextFileName%>-query.ts
+unless_exists: true
+---
+import { QueryDatabaseModel,Type } from '@ebd-connect/cqrs-framework'
+import { <%=ContextName%>QueryHandlers } from './<%=contextFileName%>/<%=contextFileName%>-query-handlers'
+import {
+  //dbModelsImports
+} from './<%=contextFileName%>/<%=contextFileName%>-query-db'
+
+export const <%=contextName%>QueryHandlers: Type[] = [
+  <%=ContextName%>QueryHandlers,
+]
+
+export const <%=contextName%>DatabaseModels: QueryDatabaseModel[] = [
+  //dbModelsDefs
+]

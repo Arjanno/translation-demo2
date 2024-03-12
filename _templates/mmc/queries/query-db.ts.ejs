@@ -1,0 +1,10 @@
+---
+to: libs/backend/<%=contextFileName%>-query/src/<%=contextFileName%>/<%=contextFileName%>-query-db.ts
+force: true
+---
+import { QueryDatabaseModel } from '@ebd-connect/cqrs-framework'
+import { <% queries.map( (query) => {%>  I<%=h.changeCase.pascalCase(query.name)%>,<% }) -%>} from '@api/<%=contextFileName%>-query'
+
+<% queries.map( (query) => {%>export const <%=h.changeCase.camelCase(query.name)%>QueryDb
+  = new QueryDatabaseModel< I<%=h.changeCase.pascalCase(query.name)%> >('<%=h.changeCase.paramCase(query.name)%>')
+<%})%>

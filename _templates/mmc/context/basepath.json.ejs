@@ -1,0 +1,9 @@
+---
+inject: true
+to: tsconfig.base.json
+after: paths
+skip_if: api/<%=contextFileName%>
+---
+      "@api/<%=contextFileName%>-command": ["libs/api/<%=contextFileName%>-command/src/index.ts"],
+      "@api/<%=contextFileName%>-event": ["libs/api/<%=contextFileName%>-event/src/index.ts"],
+      "@backend/<%=contextFileName%>-core": ["libs/backend/<%=contextFileName%>-core/src/index.ts"],

@@ -1,0 +1,7 @@
+---
+inject: true
+to: apps/mmc-command/src/main.ts
+after: contextCommandHandlers
+skip_if: <%=contextName%>
+---
+    ...<%=contextName%>CommandHandlers,

@@ -1,0 +1,14 @@
+### TranslationPrice Command
+POST http://localhost:3100/
+Content-Type: application/json
+
+{
+"command": "TranslationPrice",
+  "payload": {
+     "text" : "",
+     "translationId" : ""
+  }
+}
+
+
+

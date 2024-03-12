@@ -1,0 +1,48 @@
+---
+to: libs/backend/<%= contextFileName %>-automation/src/<%=eventStreamFileName%>/<%= automationFileName%>.ts
+force: true
+---
+import { Processor, automationFactory, eventHandler,messageBus,} from "@ebd-connect/cqrs-framework"
+import {<%=CommandName %>,} from "@api/<%= contextFileName %>-command";
+import {<%command.ruleList.events.map((item) => {%><%=h.changeCase.pascalCase(item.event.name)%>,<%})-%>
+} from "@api/<%= contextFileName %>-event";
+import {<%automation.flowQuery.events.map((item) => {%><%=h.changeCase.pascalCase(item.flowEvent.event.name)%>,<%})-%>
+} from "@api/<%= contextFileName %>-event";
+
+interface <%= h.changeCase.pascalCase(automation.flowQuery.name) %> {
+<% automation.flowQuery.facts.map((fact) => { %>  <%= h.changeCase.camelCase(fact.fact.name) %>?: <%= fact.fact.factValueType.dataTypes[0].dataType.name %>,<% }) -%>
+}
+
+export class <%= h.changeCase.pascalCase(automation.name) %>
+implements Processor<<%= h.changeCase.pascalCase(automation.flowQuery.name) %>>
+{
+  private readonly automation = automationFactory.forProcessor(this)
+
+  async process(data: <%= h.changeCase.pascalCase(automation.flowQuery.name) %>): Promise<void> {
+    if (<% automation.flowQuery.facts.map((fact, i) => { %> data.<%= h.changeCase.camelCase(fact.fact.name) %><%if (i < automation.flowQuery.facts.length-1) {%>&& <%}%><% }) -%>)
+      await messageBus.execute(new <%= CommandName %>(
+  <%command.facts.map((fact,i) => {if (fact.isIdentifier && events[0].isStartOfEventStream) {%>undefined ,<%} else {%>      data.<%=h.changeCase.camelCase(fact.fact.name)%>,<%}})%>
+      ))
+  }
+
+  @eventHandler({name: '<%=h.changeCase.pascalCase(automation.flowQuery.events[0].flowEvent.event.name)%>'})
+  async on<%=h.changeCase.pascalCase(automation.flowQuery.events[0].flowEvent.event.name)%>(event: <%=h.changeCase.pascalCase(automation.flowQuery.events[0].flowEvent.event.name)%>) {
+    await this.automation.add(event.<%=h.changeCase.camelCase(automation.flowQuery.events[0].flowEvent.event.facts[0].fact.name)%>, {
+      <%automation.flowQuery.events[0].flowEvent.event.facts.map((item) => {if(automation.flowQuery.facts.find((modelFact) => modelFact.fact.name === item.fact.name)) { %> <%=h.changeCase.camelCase(item.fact.name)%>: event.<%=h.changeCase.camelCase(item.fact.name)%>, <%}})%>
+    })
+  }
+  <%if(automation.flowQuery.events.length>1) {-%><%for(let i=1; i<(automation.flowQuery.events.length);i++) { if (events.findIndex((item) => automation.flowQuery.events[i].flowEvent.event.name===item.event.name) === -1)   {-%>
+  @eventHandler({name: '<%=h.changeCase.pascalCase(automation.flowQuery.events[i].flowEvent.event.name)%>'})
+  async on<%=h.changeCase.pascalCase(automation.flowQuery.events[i].flowEvent.event.name)%>(event: <%=h.changeCase.pascalCase(automation.flowQuery.events[i].flowEvent.event.name)%>) {
+    await this.automation.update(event.<%=h.changeCase.camelCase(automation.flowQuery.events[i].flowEvent.event.facts[0].fact.name)%>, {
+      <%automation.flowQuery.events[i].flowEvent.event.facts.map((item) => {if(automation.flowQuery.facts.find((modelFact) => modelFact.fact.name === item.fact.name)) { %> <%=h.changeCase.camelCase(item.fact.name)%>: event.<%=h.changeCase.camelCase(item.fact.name)%>, <%}})%>
+    })
+  }
+  <%}}}-%>
+
+  <%events.map((item) => {-%>@eventHandler({name: '<%=h.changeCase.pascalCase(item.event.name)%>'})
+  async on<%=h.changeCase.pascalCase(item.event.name)%>(event: <%=h.changeCase.pascalCase(item.event.name)%>) {
+    await this.automation.onComplete(event.<%=h.changeCase.camelCase(automation.flowQuery.events[automation.flowQuery.events.length-1].flowEvent.event.facts[0].fact.name)%>)
+  }
+  <%})%>
+}

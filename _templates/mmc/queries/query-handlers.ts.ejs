@@ -1,0 +1,16 @@
+---
+to: libs/backend/<%=contextFileName%>-query/src/<%=contextFileName%>/<%=contextFileName%>-query-handlers.ts
+force: true
+---
+import { QueryReturnType, queryHandler } from '@ebd-connect/cqrs-framework'
+import {   <%=QueryName%>,} from '@api/<%=contextFileName%>-query'
+import {   <%=queryName%>QueryDb,} from './<%=contextFileName%>-query-db'
+
+export class <%=ContextName%>QueryHandlers {
+
+  @queryHandler({ name:'<%=QueryName%>'})
+  async <%=queryName%>({<%=identifierName%>,}: <%=QueryName%>): QueryReturnType< <%=QueryName%> > {
+    return <%=queryName%>QueryDb.find(<%=identifierName%>)
+  }
+
+}

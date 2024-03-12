@@ -1,0 +1,14 @@
+### SubmitTranslationRequest Command
+POST http://localhost:3100/
+Content-Type: application/json
+
+{
+"command": "SubmitTranslationRequest",
+  "payload": {
+     "text" : "",
+     "translationId" : ""
+  }
+}
+
+
+

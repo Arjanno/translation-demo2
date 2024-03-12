@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: mmc
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+  axonserver:
+    image: axoniq/axonserver:latest
+    restart: always
+    hostname: axonserver
+    volumes:
+      - axonserver_data:/data
+      - axonserver_events:/eventdata
+    ports:
+      - '8024:8024'
+      - '8124:8124'
+
+volumes:
+  axonserver_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${VOLUMES_DIR}/data
+  axonserver_events:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${VOLUMES_DIR}/events

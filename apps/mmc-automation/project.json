@@ -1,0 +1,69 @@
+{
+  "name": "mmc-automation",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mmc-automation/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/mmc-automation",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/mmc-automation/src/main.ts",
+        "tsConfig": "apps/mmc-automation/tsconfig.app.json",
+        "assets": ["apps/mmc-automation/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "mmc-automation:build",
+        "inspect": true,
+        "port": 9232
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "mmc-automation:build:development"
+        },
+        "production": {
+          "buildTarget": "mmc-automation:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/mmc-automation/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

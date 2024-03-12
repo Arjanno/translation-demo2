@@ -1,0 +1,16 @@
+---
+to: libs/backend/<%=contextFileName %>-core/src/domain/<%=eventStreamFileName%>.ts
+inject: true
+after_marker: //start <%=CommandName%>
+before: //end <%=CommandName%>
+after_not_found: when
+---
+  //start <%=CommandName%>
+  public <%=commandName%>(<% if (isStartOfEventStream) {%><%=eventStreamIdentifier%>: string,<%}%> command: <%=CommandName%><%if (serviceName) {-%>, <%= serviceParameterType%><%}%> ) {
+<%if (serviceName) {-%>    const <%=serviceResultName%> = <%=serviceCallingCode%><%}%><%command.ruleList.events.map((event) => {-%>
+<%if(event.rules[0].rule) {%>
+    if (<%=event.rules[0].rule%>) {<%}%>
+      this.apply(<%= h.changeCase.pascalCase(event.event.name)%>, { ...command <%if (serviceName) {-%>, <%=event.rules[0].rule.substring(event.rules[0].rule.indexOf('.')+1)%>: <%=event.rules[0].rule%><%}%><% if (isStartOfEventStream) {%>,<%=eventStreamIdentifier%><%}%> });
+<%if(event.rules[0].rule) {%>   }<%}-%><%})%>
+  }
+  //end <%=CommandName%>

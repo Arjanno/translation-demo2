@@ -1,0 +1,7 @@
+---
+inject: true
+to: libs/backend/<%=contextFileName %>-automation/src/index.ts
+append: true
+skip_if: '<%=contextFileName %>-automation'
+---
+export * from './<%=contextFileName %>-automation'

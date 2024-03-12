@@ -1,0 +1,7 @@
+---
+inject: true
+to: apps/mmc-automation/src/main.ts
+after: //automation processors
+skip_if: <%=contextName%>Processors, //processor
+---
+    ...<%=contextName%>Processors, //processor
