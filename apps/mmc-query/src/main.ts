@@ -23,9 +23,8 @@ configLogger();
 
 const axonConnector = new AxonApplication({
   queryHandlers: [
-    ...webTranslatorQueryHandlers,
-
     //queryHandlers
+    ...webTranslatorQueryHandlers,
   ],
   connection: {
     serviceClientInit: {
@@ -48,5 +47,5 @@ const axonConnector = new AxonApplication({
     },
   },
 });
-axonConnector.connect();
+axonConnector.connect().catch((error) => console.error(error.message));
 

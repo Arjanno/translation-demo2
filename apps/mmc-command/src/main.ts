@@ -8,18 +8,16 @@ import {
 } from '@ebd-connect/cqrs-framework';
 
 const isProduction = false;
-const AXON_HOST = process.env.AXON_HOST ?? 'localhost:8124';
-//axon connector
 configLogger();
+
 const axonConnector = new AxonApplication({
   commandHandlers: [
     // contextCommandHandlers
     ...webTranslatorCommandHandlers,
-
   ],
   connection: {
     serviceClientInit: {
-      address: AXON_HOST,
+      address: process.env.AXON_HOST ?? 'localhost:8124',
       credentials: credentials.createInsecure(),
     },
     clientIdentification: new ClientIdentification()
@@ -28,5 +26,5 @@ const axonConnector = new AxonApplication({
     forceStayOnSameConnection: !isProduction,
   },
 });
-axonConnector.connect();
+axonConnector.connect().catch((error) => console.error(error.message));
 

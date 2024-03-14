@@ -5,10 +5,9 @@ Content-Type: application/json
 {
 "command": "ApproveTranslationPrice",
   "payload": {
-     "translationId" : "",
-     "price" : "",
-     "approved" : ""
-  }
+     "translationId" : "8823c510-9755-41c0-be20-f4142b7c6444",
+     "price" : "12",
+     "approved" : true  }
 }
 
 

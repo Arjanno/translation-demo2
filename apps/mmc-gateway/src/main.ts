@@ -29,28 +29,30 @@ const axonConnector = new AxonApplication({
     forceStayOnSameConnection: !isProduction,
   },
 });
-axonConnector.connect();
-const app = express();
-app.use(express.json());
-app.use(cors())
+axonConnector.connect().then( () => {
+    const app = express();
+    app.use(express.json());
+    app.use(cors())
 
-app.post('/', async (req, res) => {
-  const command: string = req.body['command'] as string;
-  const payload: never = req.body['payload'] as never;
+    app.post('/', async (req, res) => {
+      const command: string = req.body['command'] as string;
+      const payload: never = req.body['payload'] as never;
 
-  if (command && payload) {
-    try {
-      const result = await messageBus.execute(
-        Object.assign(payload, { constructor: { name: command } })
-      );
-      res.send(result);
-    } catch (e) {
-      logger.error(`${e.name}: ${e.message}`);
-      res.status(500).send(e.name);
-    }
+      if (command && payload) {
+        try {
+          const result = await messageBus.execute(
+            Object.assign(payload, { constructor: { name: command } })
+          );
+          res.send(result);
+        } catch (e) {
+          logger.error(`${e.name}: ${e.message}`);
+          res.status(500).send(e.name);
+        }
+      }
+    });
+
+    app.listen(port, host, () => {
+      console.log(`[ ready ] http://${host}:${port}`);
+    })
   }
-});
-
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
-});
+).catch((error) => console.error(error.message));

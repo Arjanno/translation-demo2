@@ -9,7 +9,7 @@ import { TranslationPriceNotFound } from '@api/web-translator-event';
 
 import { TranslationPriceDetermined } from '@api/web-translator-event';
 
-import { TranslationPrice } from '@api/web-translator-command';
+import { DetermineTranslationPrice } from '@api/web-translator-command';
 
 
 import { TranslationRequestSubmitted } from '@api/web-translator-event';
@@ -23,7 +23,7 @@ import {
 } from '@ebd-connect/cqrs-framework';
 
 export class Translation extends AggregateRoot {
-  private approved! : string;
+  private approved! : boolean;
   private errorMessage! : string;
   private price! : string;
   private text! : string;
@@ -33,28 +33,25 @@ export class Translation extends AggregateRoot {
   public approveTranslationPrice( command: ApproveTranslationPrice ) {
 
     if (command.approved) {
-      this.apply(TranslationPriceDeclined, { ...command  });
+      this.apply(TranslationPriceApproved, { ...command  });
    }
     if (!command.approved) {
-      this.apply(TranslationPriceApproved, { ...command  });
+      this.apply(TranslationPriceDeclined, { ...command  });
    }
   }
   @eventSourcingHandler({ name: 'TranslationPriceDeclined' })
   onTranslationPriceDeclined(event: TranslationPriceDeclined) {
-    //
+    this.translationId = event.translationId;
+    this.approved = event.approved;
   }
 
   @eventSourcingHandler({ name: 'TranslationPriceApproved' })
   onTranslationPriceApproved(event: TranslationPriceApproved) {
     this.translationId = event.translationId;
-    this.price = event.price;
     this.approved = event.approved;
   }
 
-  //end ApproveTranslationPrice
-
-  //start TranslationPrice
-  public translationPrice( command: TranslationPrice, calcPrice: {({text}: {text: string})} ) {
+  public determineTranslationPrice(command: DetermineTranslationPrice, calcPrice: {({text}: {text: string})} ) {
     const result = calcPrice({text:command.text})
     if (result.price) {
       this.apply(TranslationPriceDetermined, { ...command , price: result.price });
@@ -76,21 +73,12 @@ export class Translation extends AggregateRoot {
     this.errorMessage = event.errorMessage;
   }
 
-  //end TranslationPrice
-
-  //start SubmitTranslationRequest
   public submitTranslationRequest(translationId: string, command: SubmitTranslationRequest ) {
-
       this.apply(TranslationRequestSubmitted, { ...command ,translationId });
-
   }
   @eventSourcingHandler({ name: 'TranslationRequestSubmitted' })
   onTranslationRequestSubmitted(event: TranslationRequestSubmitted) {
     this.text = event.text;
     this.translationId = event.translationId;
   }
-
-  //end SubmitTranslationRequest
-
-  //end when
 }

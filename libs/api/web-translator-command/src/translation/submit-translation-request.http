@@ -5,7 +5,7 @@ Content-Type: application/json
 {
 "command": "SubmitTranslationRequest",
   "payload": {
-     "text" : "",
+     "text" : "test",
      "translationId" : ""
   }
 }
